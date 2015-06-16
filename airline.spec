@@ -1,6 +1,6 @@
 Name:          airline
 Version:       0.7
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       Java annotation-based framework
 License:       ASL 2.0
 URL:           https://github.com/airlift/airline
@@ -56,5 +56,8 @@ find -name '*.jar' -delete
 %license license.txt notice.md
 
 %changelog
+* Tue Jun 16 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.7-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Wed Feb 18 2015 gil cattaneo <puntogil@libero.it> 0.7-1
 - initial rpm
