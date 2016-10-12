@@ -1,26 +1,26 @@
 %{?scl:%scl_package airline}
 %{!?scl:%global pkg_name %{name}}
 
-Name:          %{?scl_prefix}airline
-Version:       0.7
-Release:       5%{?dist}
-Summary:       Java annotation-based framework
-License:       ASL 2.0
-URL:           https://github.com/airlift/%{pkg_name}
-Source0:       https://github.com/airlift/%{pkg_name}/archive/%{version}.tar.gz
+Name:		%{?scl_prefix}airline
+Version:	0.7
+Release:	6%{?dist}
+Summary:	Java annotation-based framework
+License:	ASL 2.0
+URL:		https://github.com/airlift/%{pkg_name}
+Source0:	https://github.com/airlift/%{pkg_name}/archive/%{version}.tar.gz
 
-BuildArch:     noarch
+BuildArch:	noarch
 
 # build parent
-BuildRequires: mvn(com.google.code.findbugs:jsr305)
+BuildRequires:	%{?scl_prefix_maven}mvn(com.google.code.findbugs:jsr305)
 # build
-BuildRequires: %{?scl_mvn_prefix}maven-local
-BuildRequires: mvn(javax.inject:javax.inject)
-BuildRequires: mvn(com.google.guava:guava) %{!?scl:>= 18.0}
+BuildRequires:	%{?scl_prefix_maven}maven-local
+BuildRequires:	%{?scl_prefix_java_common}mvn(com.google.guava:guava) %{!?scl:>= 18.0}
+BuildRequires:	mvn(javax.inject:javax.inject)
 # it is not needed by cassandra so it is removed for scl package
 %{!?scl:BuildRequires: mvn(com.google.code.findbugs:annotations)}
 # test
-BuildRequires: mvn(org.testng:testng)
+BuildRequires:	%{?scl_prefix_maven}mvn(org.testng:testng)
 %{?scl:Requires: %scl_runtime}
 
 %description
@@ -28,15 +28,15 @@ Airline is a Java annotation-based framework
 for parsing Git like command line structures.
 
 %package javadoc
-Summary:       Javadoc for %{name}
+Summary:	Javadoc for %{name}
 
 %description javadoc
 This package contains javadoc for %{name}.
 
 %prep
-%{?scl_enable}
 %setup -qn %{pkg_name}-%{version}
 
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 # remove parent io.airlift:airbase:pom:45
 %pom_remove_parent
 
@@ -57,17 +57,17 @@ This package contains javadoc for %{name}.
 %{?scl:rm src/test/java/io/airlift/airline/TestGalaxyCommandLineParser.java}
 
 %mvn_file :%{pkg_name} %{pkg_name}
-%{?scl_disable}
+%{?scl:EOF}
 
 %build
-%{?scl_enable}
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 %mvn_build -- -Dproject.build.sourceEncoding=UTF-8
-%{?scl_disable}
+%{?scl:EOF}
 
 %install
-%{?scl_enable}
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 %mvn_install
-%{?scl_disable}
+%{?scl:EOF}
 
 %files -f .mfiles
 %doc README.md
@@ -77,6 +77,9 @@ This package contains javadoc for %{name}.
 %license license.txt notice.md
 
 %changelog
+* Wed Oct 12 2016 Tomas Repik <trepik@redhat.com> - 0.7-6
+- use standard SCL macros
+
 * Tue Aug 23 2016 Tomas Repik <trepik@redhat.com> - 0.7-5
 - scl conversion
 
