@@ -3,7 +3,7 @@
 
 Name:		%{?scl_prefix}airline
 Version:	0.7
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	Java annotation-based framework
 License:	ASL 2.0
 URL:		https://github.com/airlift/%{pkg_name}
@@ -15,12 +15,12 @@ BuildArch:	noarch
 BuildRequires:	%{?scl_prefix_maven}mvn(com.google.code.findbugs:jsr305)
 # build
 BuildRequires:	%{?scl_prefix_maven}maven-local
-BuildRequires:	%{?scl_prefix_java_common}mvn(com.google.guava:guava) %{!?scl:>= 18.0}
+BuildRequires:	%{?scl_prefix}guava >= 18.0
 BuildRequires:	mvn(javax.inject:javax.inject)
 # it is not needed by cassandra so it is removed for scl package
 %{!?scl:BuildRequires: mvn(com.google.code.findbugs:annotations)}
 # test
-BuildRequires:	%{?scl_prefix_maven}mvn(org.testng:testng)
+BuildRequires:	%{?scl_prefix_maven}testng
 %{?scl:Requires: %scl_runtime}
 
 %description
@@ -53,9 +53,6 @@ This package contains javadoc for %{name}.
 # remove missing dependency for scl package
 %{?scl:%pom_remove_dep com.google.code.findbugs:annotations}
 
-# remove test requiring higher version of guava
-%{?scl:rm src/test/java/io/airlift/airline/TestGalaxyCommandLineParser.java}
-
 %mvn_file :%{pkg_name} %{pkg_name}
 %{?scl:EOF}
 
@@ -77,6 +74,9 @@ This package contains javadoc for %{name}.
 %license license.txt notice.md
 
 %changelog
+* Wed Dec 14 2016 Tomas Repik <trepik@redhat.com> - 0.7-7
+- depend on new guava 18.0, no need to remove any tests
+
 * Wed Oct 12 2016 Tomas Repik <trepik@redhat.com> - 0.7-6
 - use standard SCL macros
 
