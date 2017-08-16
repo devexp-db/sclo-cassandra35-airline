@@ -16,6 +16,7 @@ BuildRequires:	%{?scl_prefix_maven}mvn(com.google.code.findbugs:jsr305)
 # build
 BuildRequires:	%{?scl_prefix_maven}maven-local
 BuildRequires:	%{?scl_prefix}guava >= 18.0
+BuildRequires:	%{?scl_prefix}snakeyaml
 BuildRequires:	mvn(javax.inject:javax.inject)
 # it is not needed by cassandra so it is removed for scl package
 %{!?scl:BuildRequires: mvn(com.google.code.findbugs:annotations)}
